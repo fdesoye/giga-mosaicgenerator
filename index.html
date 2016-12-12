@@ -1,0 +1,80 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src='js/jquery.cloudinary.js' type='text/javascript'></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+
+</head>
+<body>
+<div class="container">
+<div class="row">
+<div id="test">
+</div>
+</div>
+<div class="row">
+	<div class="input-group">
+  <input id="img0" type="text" class="form-control image" placeholder="image path" value="sis/turner.com/a1eb8a20-9eea-4231-a846-c8ceae9714a7.jpg"/>
+  <input id="img1" type="text" class="form-control image" placeholder="image path" value="sis/planet-tv.de/a28bac36-5bb8-49f0-8b5c-01a62d239043.jpg"/>
+  <input id="img2" type="text" class="form-control image" placeholder="image path" value="sis/planet-tv.de/50ebf243-8b66-46f7-bbb7-3a22d31b4158.jpg"/>
+  <input id="img3" type="text" class="form-control image" placeholder="image path" value="sis/paramount.com/48049d78-e8c2-44fb-a5fa-62f40f2ccb37.jpg"/>
+  <input id="img4" type="text" class="form-control image" placeholder="image path" value="sis/universalstudios.com/6e99f5d5-5cdd-4ae0-bd35-a5befb7e5a5a.jpg"/>
+  <input id="img5" type="text" class="form-control image" placeholder="image path" value="sis/paramount.com/2ad26e00-049e-4d1d-8ce2-7d3842d43552.jpg"/>
+  <input id="img6" type="text" class="form-control image" placeholder="image path" value="sis/warnerbros.com/8085fdfc-202d-4411-b24d-caede64bced2.jpg"/>
+  <input id="img7" type="text" class="form-control image" placeholder="image path" value="sis/sonypictures.com/df4949d8-8ee5-4aab-a4fb-e698c8fcd60a.jpg"/>
+  <input id="img8" type="text" class="form-control image" placeholder="image path" value="sis/planet-tv.de/a28bac36-5bb8-49f0-8b5c-01a62d239043.jpg"/>
+  <input id="img9" type="text" class="form-control image" placeholder="image path" value="sis/turner.com/a1eb8a20-9eea-4231-a846-c8ceae9714a7.jpg"/>
+  <input id="img_overlay" type="text" class="form-control" placeholder="image path" value="raute"/>
+  <a href="#" onclick="makeMosaic()">Generiere Mosaic</a>
+</div>
+</div>
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$.cloudinary.config({ 
+  cloud_name: 'desoye'
+});
+
+var background = "raute"
+
+
+function makeMosaic(){
+
+bilder=[];
+$('.image').each(function (){
+	bilder.push($(this).val())
+})
+
+for (var i = 1; i<bilder.length; i++){
+	bilder[i] = bilder[i].replace(/\//g,":");
+}
+
+var w = 76;
+var h = 107
+
+var i = 0;
+var x = $.cloudinary.image(bilder[i++], {transformation: [
+  {width: w, height: h, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: w+1, y: 0, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(1.5*(w+1)), y: 0, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(2*(w+1)), y: 0, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(2.5*(w+1)), y: 0, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: 0, y: h+2, crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil((w+1)), y: Math.round(0.5*(h+1)), crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(2*(w+1)), y: Math.round(0.5*(h+1)), crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(-2*(w+1)), y: Math.round(0.5*(h+1)), crop: "fill"},
+  {overlay: bilder[i++], width: w, height: h, x: Math.ceil(-1*(w+1)), y: Math.round(0.5*(h+1)), crop: "fill"},
+  {overlay: background, width: 384, height: 216}
+  ]})
+$("#test").append(x)    
+}
+</script>
+
+</body>
+</html>
